@@ -59,12 +59,6 @@ export default function HomePage() {
             <h1 className="text-6xl font-display font-bold">M/S Sarvat Indane Sewa</h1>
             <p className="text-2xl font-light opacity-90">Indane LPG Gas Cylinder Distributer</p>
           </div>
-          <div className="absolute top-12 right-12">
-            <Button onClick={() => setLocation("/login")} variant="outline" className="bg-white/10 border-white/20 text-white rounded-full px-8 py-6 text-lg hover:bg-white/20">
-              <LogIn className="mr-2 w-5 h-5" />
-              Login
-            </Button>
-          </div>
         </section>
 
         {/* Local Nav */}

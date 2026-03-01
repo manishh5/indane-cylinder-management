@@ -44,9 +44,6 @@ export default function About() {
             <p className="text-gray-300 text-lg md:text-xl font-light">
               India's most trusted LPG provider, delivering safe and reliable energy to millions of households since 1964.
             </p>
-            <div className="absolute top-4 right-4 md:top-8 md:right-8">
-               <Button onClick={() => setLocation("/login")} className="bg-primary hover:bg-primary/90 text-white rounded-xl px-8 py-6 text-lg font-bold">Login</Button>
-            </div>
           </div>
         </section>
 
