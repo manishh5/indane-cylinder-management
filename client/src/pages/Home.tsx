@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
@@ -10,17 +10,17 @@ import { useCreateBooking } from "@/hooks/use-bookings";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { z } from "zod";
-import { ArrowRight, Flame, Truck, ShieldCheck, Phone } from "lucide-react";
+import { ArrowRight, Flame, Package, Truck, Home } from "lucide-react";
 import { useLocation } from "wouter";
 
-// Extended schema to ensure numbers are handled correctly from inputs
 const quickBookingSchema = insertBookingSchema.extend({
   quantity: z.coerce.number().min(1).max(10),
+  phone: z.string().min(10, "Invalid Indian phone number").max(10),
 });
 
 type QuickBookingForm = z.infer<typeof quickBookingSchema>;
 
-export default function Home() {
+export default function HomePage() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const createBooking = useCreateBooking();
@@ -40,106 +40,137 @@ export default function Home() {
       onSuccess: (result) => {
         toast({
           title: "Booking Successful!",
-          description: `Your tracking ID is ${result.trackOrderId}. Save this to track your order.`,
+          description: `Your tracking ID is ${result.trackOrderId}.`,
         });
         form.reset();
         setLocation(`/track?id=${result.trackOrderId}`);
-      },
-      onError: (err) => {
-        toast({
-          variant: "destructive",
-          title: "Booking Failed",
-          description: err.message,
-        });
       }
     });
   };
 
+  const navItems = ["Home", "Features", "Safety", "Address"];
+
   return (
     <Layout>
-      <div className="relative isolate pt-8 pb-16">
-        {/* Abstract Minimal Background Elements */}
-        <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-          <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" }} />
+      <div className="space-y-12">
+        {/* Banner Section */}
+        <section className="bg-primary rounded-[40px] p-12 text-white relative overflow-hidden">
+          <div className="max-w-3xl space-y-6">
+            <h1 className="text-6xl font-display font-bold">M/S Sarvat Indane Sewa</h1>
+            <p className="text-2xl font-light opacity-90">Indane LPG Gas Cylinder Distributer</p>
+          </div>
+          <div className="absolute top-12 right-12">
+            <Button onClick={() => setLocation("/login")} variant="outline" className="bg-white/10 border-white/20 text-white rounded-full px-8 py-6 text-lg hover:bg-white/20">
+              <LogIn className="mr-2 w-5 h-5" />
+              Login
+            </Button>
+          </div>
+        </section>
+
+        {/* Local Nav */}
+        <div className="flex gap-8 px-4 border-b">
+          {navItems.map(item => (
+            <button key={item} className={`pb-4 text-lg font-medium ${item === "Home" ? "text-primary border-b-2 border-primary" : "text-gray-500"}`}>
+              {item}
+            </button>
+          ))}
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-left"
-          >
-            <h1 className="text-5xl sm:text-6xl font-display font-extrabold tracking-tight text-foreground mb-6 leading-tight">
-              Instant Cylinder <br/>
-              <span className="text-gradient">Delivery</span> to Your Door
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8 max-w-xl">
-              Fast, reliable, and secure gas cylinder booking system. Book online instantly or sign up to manage your history and track deliveries in real-time.
-            </p>
-            
-            <div className="flex flex-wrap gap-4 mb-12">
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border">
-                <Flame className="text-primary w-5 h-5" />
-                <span className="font-medium text-sm">Certified Safe</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border">
-                <Truck className="text-primary w-5 h-5" />
-                <span className="font-medium text-sm">Fast Delivery</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border">
-                <ShieldCheck className="text-primary w-5 h-5" />
-                <span className="font-medium text-sm">Quality Assured</span>
-              </div>
+        {/* Feature Cards */}
+        <section className="grid md:grid-cols-3 gap-8">
+          <Card className="rounded-[32px] border-0 shadow-lg p-8 space-y-6 group hover:shadow-2xl transition-all cursor-pointer" onClick={() => setLocation("/login")}>
+            <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center text-white">
+              <Package className="w-8 h-8" />
             </div>
-          </motion.div>
+            <div>
+              <h3 className="text-2xl font-bold mb-2">New Connection</h3>
+              <p className="text-gray-500">(Apply for new LPG)</p>
+            </div>
+            <div className="h-1 bg-blue-500 rounded-full w-2/3 group-hover:w-full transition-all"></div>
+          </Card>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="glass overflow-hidden border-0 ring-1 ring-black/5 rounded-3xl">
-              <CardHeader className="bg-primary/5 pb-8">
-                <CardTitle className="text-2xl font-display">Quick Booking</CardTitle>
-                <CardDescription>No account required. Book a cylinder instantly.</CardDescription>
-              </CardHeader>
-              <CardContent className="-mt-4 bg-white/60 p-6 rounded-t-3xl pt-8">
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="customerName">Full Name</Label>
-                    <Input id="customerName" {...form.register("customerName")} placeholder="John Doe" className="bg-white/80 rounded-xl h-12" />
-                    {form.formState.errors.customerName && <p className="text-destructive text-sm">{form.formState.errors.customerName.message}</p>}
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input id="phone" {...form.register("phone")} placeholder="+1 234 567 890" className="bg-white/80 rounded-xl h-12" />
-                      {form.formState.errors.phone && <p className="text-destructive text-sm">{form.formState.errors.phone.message}</p>}
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="quantity">Quantity</Label>
-                      <Input id="quantity" type="number" {...form.register("quantity")} className="bg-white/80 rounded-xl h-12" />
-                      {form.formState.errors.quantity && <p className="text-destructive text-sm">{form.formState.errors.quantity.message}</p>}
-                    </div>
-                  </div>
+          <Card className="rounded-[32px] border-0 shadow-lg p-8 space-y-6 group hover:shadow-2xl transition-all border-b-4 border-primary">
+            <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white">
+              <Truck className="w-8 h-8" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold mb-2">Quick Booking</h3>
+              <p className="text-gray-500">(For non-users)</p>
+            </div>
+          </Card>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Delivery Address</Label>
-                    <Input id="address" {...form.register("address")} placeholder="123 Main St, City" className="bg-white/80 rounded-xl h-12" />
-                    {form.formState.errors.address && <p className="text-destructive text-sm">{form.formState.errors.address.message}</p>}
-                  </div>
+          <Card className="rounded-[32px] border-0 shadow-lg p-8 space-y-6 group hover:shadow-2xl transition-all" onClick={() => setLocation("/login")}>
+            <div className="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center text-white">
+              <Home className="w-8 h-8" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold mb-2">Home Delivery</h3>
+              <p className="text-gray-500">(For Users)</p>
+            </div>
+            <div className="h-1 bg-red-500 rounded-full w-2/3 group-hover:w-full transition-all"></div>
+          </Card>
+        </section>
 
-                  <Button type="submit" disabled={createBooking.isPending} className="w-full h-12 rounded-xl mt-4 bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all text-base font-semibold">
-                    {createBooking.isPending ? "Processing..." : "Book Now"}
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
+        {/* Quick Booking Form */}
+        <section className="max-w-4xl mx-auto py-12">
+          <Card className="glass rounded-[40px] border-0 shadow-2xl p-10">
+            <h2 className="text-3xl font-display font-bold mb-8">Instant Booking</h2>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label>Full Name</Label>
+                  <Input {...form.register("customerName")} placeholder="Enter your name" className="h-14 rounded-2xl bg-gray-50 border-0" />
+                  {form.formState.errors.customerName && <p className="text-red-500 text-sm">{form.formState.errors.customerName.message}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label>Phone Number</Label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-4 text-gray-500">+91</span>
+                    <Input {...form.register("phone")} placeholder="935524XXXX" className="h-14 rounded-2xl bg-gray-50 border-0 pl-14" />
+                  </div>
+                  {form.formState.errors.phone && <p className="text-red-500 text-sm">{form.formState.errors.phone.message}</p>}
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label>Address</Label>
+                  <Input {...form.register("address")} placeholder="Delivery address" className="h-14 rounded-2xl bg-gray-50 border-0" />
+                  {form.formState.errors.address && <p className="text-red-500 text-sm">{form.formState.errors.address.message}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label>Quantity</Label>
+                  <Input type="number" {...form.register("quantity")} className="h-14 rounded-2xl bg-gray-50 border-0" />
+                </div>
+              </div>
+              <Button type="submit" disabled={createBooking.isPending} className="w-full h-16 rounded-2xl text-xl font-bold bg-primary hover:bg-primary/90 shadow-xl">
+                {createBooking.isPending ? "Booking..." : "Book Now"}
+                <ArrowRight className="ml-2" />
+              </Button>
+            </form>
+          </Card>
+        </section>
+
+        {/* Bottom Banner */}
+        <section className="bg-primary rounded-[40px] p-20 text-center space-y-10 relative overflow-hidden">
+          <h2 className="text-6xl font-display font-bold text-white max-w-4xl mx-auto leading-tight">
+            Ready to Transform Your Business?
+          </h2>
+          <p className="text-xl text-white/80 max-w-2xl mx-auto">
+            Book a demo today and see how our ERP system can streamline your operations
+          </p>
+          <div className="flex justify-center gap-6">
+            <Button className="bg-white text-primary rounded-full px-10 py-8 text-xl font-bold hover:bg-gray-100">
+              Request Demo
+            </Button>
+            <Button variant="outline" className="bg-primary-foreground/10 border-white/20 text-white rounded-full px-10 py-8 text-xl font-bold hover:bg-white/20">
+              View All Services
+            </Button>
+          </div>
+        </section>
+
+        <footer className="text-center py-10 text-gray-400">
+           <p>© 2024 Indane LPG - M/S Sarvat Indane Sewa. All rights reserved.</p>
+        </footer>
       </div>
     </Layout>
   );

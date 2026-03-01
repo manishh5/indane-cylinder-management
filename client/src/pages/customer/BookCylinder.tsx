@@ -16,6 +16,7 @@ import { useEffect } from "react";
 
 const bookingSchema = insertBookingSchema.extend({
   quantity: z.coerce.number().min(1).max(10),
+  phone: z.string().length(10, "Phone number must be exactly 10 digits"),
 });
 
 type BookingForm = z.infer<typeof bookingSchema>;
@@ -71,7 +72,11 @@ export default function BookCylinder() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" {...form.register("phone")} className="h-12 rounded-xl bg-white/60" />
+                    <div className="relative">
+                      <span className="absolute left-3 top-2.5 text-muted-foreground font-medium">+91</span>
+                      <Input id="phone" {...form.register("phone")} className="h-12 rounded-xl bg-white/60 pl-12" placeholder="935524XXXX" />
+                    </div>
+                    {form.formState.errors.phone && <p className="text-destructive text-sm">{form.formState.errors.phone.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="quantity">Quantity</Label>

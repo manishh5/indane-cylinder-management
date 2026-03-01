@@ -12,7 +12,12 @@ import { z } from "zod";
 import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
 
-type RegisterForm = z.infer<typeof api.auth.registerCustomer.input>;
+// Custom schema for registration to enforce Indian phone number
+const registerSchema = api.auth.registerCustomer.input.extend({
+  phone: z.string().length(10, "Phone number must be exactly 10 digits"),
+});
+
+type RegisterForm = z.infer<typeof registerSchema>;
 
 export default function Register() {
   const [, setLocation] = useLocation();
@@ -20,14 +25,14 @@ export default function Register() {
   const { toast } = useToast();
 
   const form = useForm<RegisterForm>({
-    resolver: zodResolver(api.auth.registerCustomer.input),
+    resolver: zodResolver(registerSchema),
     defaultValues: { name: "", phone: "", password: "", address: "" }
   });
 
   const onSubmit = async (data: RegisterForm) => {
     try {
       await register(data);
-      toast({ title: "Registration successful!", description: "Welcome to GasFlow." });
+      toast({ title: "Registration successful!", description: "Welcome to IndaneSewa." });
       setLocation("/customer");
     } catch (err: any) {
       toast({
@@ -45,21 +50,25 @@ export default function Register() {
           <Card className="glass shadow-2xl border-white/50 rounded-3xl overflow-hidden">
             <CardHeader className="text-center space-y-2 pb-8 pt-10">
               <CardTitle className="text-3xl font-display">Create Account</CardTitle>
-              <CardDescription className="text-base">Join us for faster bookings</CardDescription>
+              <CardDescription className="text-base">Join IndaneSewa for faster bookings</CardDescription>
             </CardHeader>
             <CardContent className="px-8 pb-10">
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
-                  <Input id="name" {...form.register("name")} className="h-12 rounded-xl bg-white/50 focus:bg-white" />
+                  <Input id="name" {...form.register("name")} className="h-12 rounded-xl bg-white/50 focus:bg-white" placeholder="Enter your full name" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone Number (Username)</Label>
-                  <Input id="phone" {...form.register("phone")} className="h-12 rounded-xl bg-white/50 focus:bg-white" />
+                  <div className="relative">
+                    <span className="absolute left-3 top-2.5 text-muted-foreground font-medium">+91</span>
+                    <Input id="phone" {...form.register("phone")} className="h-12 rounded-xl bg-white/50 focus:bg-white pl-12" placeholder="935524XXXX" />
+                  </div>
+                  {form.formState.errors.phone && <p className="text-destructive text-sm">{form.formState.errors.phone.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="address">Default Address</Label>
-                  <Input id="address" {...form.register("address")} className="h-12 rounded-xl bg-white/50 focus:bg-white" />
+                  <Input id="address" {...form.register("address")} className="h-12 rounded-xl bg-white/50 focus:bg-white" placeholder="Enter your full address" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">Password</Label>

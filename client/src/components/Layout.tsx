@@ -23,7 +23,7 @@ export function Layout({ children }: { children: ReactNode }) {
               <Flame className="h-5 w-5" />
             </div>
             <span className="font-display font-bold text-xl tracking-tight text-foreground">
-              GasFlow
+              IndaneSewa
             </span>
           </Link>
 
@@ -113,7 +113,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
       <footer className="border-t bg-white py-8 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-muted-foreground text-sm">
-          <p>&copy; {new Date().getFullYear()} GasFlow Cylinder Booking. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} IndaneSewa - M/S Sarvat Indane Sewa. All rights reserved.</p>
         </div>
       </footer>
     </div>
