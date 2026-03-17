@@ -13,6 +13,7 @@ import TrackOrder from "@/pages/TrackOrder";
 import Contact from "@/pages/Contact";
 import About from "@/pages/About";
 import VendorKycPublic from "@/pages/VendorKycPublic";
+import QuickBook from "@/pages/QuickBook";
 
 // Customer Pages
 import CustomerDashboard from "@/pages/customer/Dashboard";
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/about" component={About} />
       <Route path="/vendor-kyc" component={VendorKycPublic} />
+      <Route path="/quick-book" component={QuickBook} />
 
       {/* Customer Routes */}
       <Route path="/customer" component={CustomerDashboard} />

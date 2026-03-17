@@ -42,6 +42,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <nav className="hidden md:flex items-center gap-6">
             {!user && (
               <>
+                {navLink("/quick-book", "Quick Book")}
                 {navLink("/track", "Track Order")}
                 {navLink("/about", "About")}
                 {navLink("/contact", "Contact")}
