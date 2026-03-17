@@ -1,0 +1,432 @@
+Build a **full-stack web application called “Indane Sewa”**, a cylinder distribution management system similar to IndianOil LPG distribution software. The system should support **three main roles: Admin, Vendor, and Customer**, and also allow **Quick Booking without login**.
+
+The system must include **authentication, order management, vendor inventory tracking, cylinder transactions, payment tracking, and admin analytics**.
+
+Use the following tech stack:
+
+Frontend:
+
+* React (Vite)
+* React Router
+* React Query
+* TailwindCSS + Shadcn UI
+* Axios or fetch for API calls
+* JWT authentication stored in localStorage
+
+Backend:
+
+* Node.js
+* Express.js
+* MongoDB with Mongoose
+* JWT authentication middleware
+* Multer for file uploads
+* REST API architecture
+
+Project structure should separate frontend and backend cleanly.
+
+---
+
+APPLICATION PURPOSE
+
+The platform manages the flow of LPG cylinders between the distributor and vendors, while also allowing customers to book cylinders.
+
+Three main actors:
+
+Admin (distributor)
+Vendor (delivery partner / local vendor)
+Customer (end user)
+
+---
+
+USER ROLES AND CAPABILITIES
+
+1. ADMIN
+
+Admin controls the entire system.
+
+Admin features:
+
+* Admin login
+* View dashboard analytics
+* Manage vendors
+* Approve vendor KYC registrations
+* Assign vendor usernames and passwords
+* View all customer orders
+* Assign orders to vendors
+* Manage cylinder inventory
+* Approve vendor cylinder requests
+* Approve vendor payment requests
+* Monitor vendor outstanding balances
+* Monitor vendor cylinder stock
+* View customer database
+
+Admin dashboard should include:
+
+Statistics:
+
+* Total orders
+* Pending orders
+* Delivered orders
+* Total vendors
+* Total customers
+* Revenue analytics
+
+Admin sections:
+
+Orders Management
+
+* List of all bookings
+* Order status (pending, processing, out_for_delivery, delivered, cancelled)
+* Assign vendor to order
+
+Vendor Management
+
+* List vendors
+* Approve or reject KYC
+* Assign login credentials
+* Track vendor balance
+* Track net empty cylinders
+
+Cylinder Management
+
+* Define cylinder types and rates:
+
+  * 14.2kg Domestic
+  * 19kg Commercial
+  * 10kg Composite
+  * 5kg Domestic
+  * 5kg Commercial
+* Manage cylinder prices
+
+Customer Management
+
+* List customers
+* Show total orders
+* Show total spent
+* Show last order date
+
+Payment Requests
+
+* Vendors submit payment proof
+* Admin approves or rejects
+
+---
+
+2. VENDOR
+
+Vendor is a delivery partner who receives cylinders and delivers to customers.
+
+Vendor features:
+
+Vendor Registration (KYC)
+Vendor Login
+Vendor Dashboard
+Inventory management
+Cylinder request management
+Payment submission
+
+Vendor KYC fields:
+
+* Vendor name
+* Phone number
+* Email
+* Address
+* Service area
+* Aadhaar card upload
+* PAN card upload
+
+Admin must approve the KYC before vendor can login.
+
+After approval, admin assigns:
+
+* Vendor username
+* Vendor password
+
+Vendor dashboard sections:
+
+Dashboard stats:
+
+* Cylinders taken today
+* Cylinders returned today
+* Net empty cylinders
+* Total balance due
+
+Order Management:
+
+* View assigned customer orders
+* Accept or reject order
+* Update order status
+* Mark delivered
+
+Inventory Management:
+Vendor can request cylinders from distributor.
+
+Request types:
+
+* Take cylinders
+* Return cylinders
+
+Each request must include:
+
+* Cylinder type
+* Quantity
+* Request type
+* Notes
+
+Admin approves requests.
+
+System must calculate:
+Net Empty Cylinders =
+Total Cylinders Taken − Total Cylinders Returned
+
+Vendor Payments:
+Vendor can submit payment for outstanding balance.
+
+Payment options:
+
+* Cash
+* UPI
+* Bank transfer
+
+Vendor must upload payment screenshot for non-cash payments.
+
+Payment status:
+
+* Pending admin approval
+* Approved
+* Rejected
+
+---
+
+3. CUSTOMER
+
+Customers can either:
+
+* Book cylinders without login (Quick Booking)
+* Or create account and login
+
+Customer features:
+
+Signup
+Login
+Dashboard
+Book cylinder
+Track orders
+View order history
+
+Customer dashboard shows:
+
+* Total orders
+* Pending orders
+* Delivered orders
+
+Customer can track order status.
+
+---
+
+QUICK BOOKING (NO LOGIN)
+
+The system must support quick booking without requiring an account.
+
+Quick booking form fields:
+
+* Customer name
+* Phone number
+* Address
+* City
+* Pincode
+* Cylinder type
+* Quantity
+* Booking type (refill or new connection)
+* Special instructions
+
+After booking:
+
+* Generate booking ID
+* Save order in database
+* Order status starts as “pending”
+
+Customer can track order using booking ID.
+
+---
+
+ORDER FLOW
+
+1. Customer places booking
+2. Order stored in database
+3. Admin views order
+4. Admin assigns vendor
+5. Vendor accepts order
+6. Vendor delivers cylinder
+7. Vendor marks order delivered
+8. Order status updated
+
+---
+
+DATABASE MODELS
+
+User
+
+* name
+* phone
+* password
+* role (admin, vendor, customer)
+
+Vendor
+
+* vendorName
+* vendorId
+* username
+* password
+* phone
+* email
+* address
+* area
+* aadhaarPhoto
+* panPhoto
+* status (pending, approved, rejected)
+* outstandingBalance
+* netEmptyCylinders
+
+Order
+
+* bookingId
+* customerName
+* customerPhone
+* customerAddress
+* cylinderType
+* quantity
+* amount
+* orderStatus
+* assignedVendor
+* createdDate
+
+CylinderRate
+
+* cylinderType
+* price
+
+VendorTransaction
+
+* vendorId
+* cylindersTaken
+* cylindersReturned
+* amountDue
+* balance
+* transactionDate
+
+VendorPaymentRequest
+
+* vendorId
+* amount
+* paymentMethod
+* paymentScreenshot
+* referenceNumber
+* notes
+* status
+* requestDate
+
+CylinderRequest
+
+* vendorId
+* cylinderType
+* quantity
+* requestType (take/return)
+* status
+* createdDate
+
+---
+
+AUTHENTICATION
+
+Use JWT authentication.
+
+Middleware:
+
+protect → verifies JWT
+restrictTo(role) → restrict access by role
+
+Authorization header format:
+
+Authorization: Bearer TOKEN
+
+---
+
+API ROUTES
+
+Auth
+POST /api/auth/login
+POST /api/auth/signup
+
+Customer
+POST /api/customer/quick-book
+GET /api/customer/track/:bookingId
+GET /api/customer/myorders
+
+Vendor
+POST /api/vendor/kyc
+POST /api/vendor/login
+GET /api/vendor/orders
+POST /api/vendor/request-cylinders
+POST /api/vendor/payment-request
+
+Admin
+GET /api/admin/orders
+GET /api/admin/vendors
+POST /api/admin/approve-vendor
+POST /api/admin/assign-vendor
+POST /api/admin/approve-cylinder-request
+POST /api/admin/approve-payment
+
+---
+
+FRONTEND PAGES
+
+Home
+EasyBooking
+TrackOrder
+CustomerSignup
+CustomerLogin
+CustomerDashboard
+VendorLogin
+VendorKYC
+VendorDashboard
+AdminLogin
+AdminDashboard
+
+---
+
+UI DESIGN
+
+Clean modern UI with:
+
+* TailwindCSS
+* Card layouts
+* Dashboard analytics
+* Mobile responsive design
+* Toast notifications
+* Modal dialogs
+
+---
+
+SPECIAL REQUIREMENTS
+
+* JWT authentication
+* File uploads for KYC
+* Role-based routing
+* API error handling
+* Real-time UI updates using React Query
+* Clean folder structure
+* Production-ready code
+
+---
+
+GOAL
+
+Create a fully functional **LPG distribution management system** that allows:
+
+* Customers to book cylinders
+* Vendors to manage deliveries and inventory
+* Admin to control the entire system
+
+The application should be scalable, cleanly structured, and easy to maintain.

@@ -26,7 +26,7 @@ export default function VendorRequests() {
     const qty = parseInt(demand);
     if (isNaN(qty) || qty <= 0) return;
     
-    createRequest.mutate({ quantityDemanded: qty }, {
+    createRequest.mutate({ quantityDemanded: qty, cylinderType: "14.2kg Domestic", requestType: "take" }, {
       onSuccess: () => {
         toast({ title: "Request sent to Admin" });
         setDemand("");

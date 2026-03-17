@@ -20,12 +20,9 @@ import BookCylinder from "@/pages/customer/BookCylinder";
 
 // Vendor Pages
 import VendorDashboard from "@/pages/vendor/Dashboard";
-import VendorRequests from "@/pages/vendor/Requests";
 
 // Admin Pages
 import AdminDashboard from "@/pages/admin/Dashboard";
-import AdminKyc from "@/pages/admin/Kyc";
-import AdminRequests from "@/pages/admin/Requests";
 
 function Router() {
   return (
@@ -45,12 +42,12 @@ function Router() {
 
       {/* Vendor Routes */}
       <Route path="/vendor" component={VendorDashboard} />
-      <Route path="/vendor/requests" component={VendorRequests} />
+      <Route path="/vendor/requests" component={VendorDashboard} />
 
-      {/* Admin Routes */}
+      {/* Admin Routes — all consolidated into one tabbed dashboard */}
       <Route path="/admin" component={AdminDashboard} />
-      <Route path="/admin/kyc" component={AdminKyc} />
-      <Route path="/admin/requests" component={AdminRequests} />
+      <Route path="/admin/kyc" component={AdminDashboard} />
+      <Route path="/admin/requests" component={AdminDashboard} />
 
       {/* Fallback to 404 */}
       <Route component={NotFound} />

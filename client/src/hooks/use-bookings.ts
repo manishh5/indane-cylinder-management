@@ -39,7 +39,10 @@ export function useCreateBooking() {
         body: JSON.stringify(data),
         credentials: "include",
       });
-      if (!res.ok) throw new Error("Failed to create booking");
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || "Failed to create booking");
+      }
       return api.bookings.create.responses[201].parse(await res.json());
     },
     onSuccess: () => {
@@ -61,6 +64,26 @@ export function useUpdateBookingStatus() {
       });
       if (!res.ok) throw new Error("Failed to update status");
       return api.bookings.updateStatus.responses[200].parse(await res.json());
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.bookings.list.path] });
+    },
+  });
+}
+
+export function useAssignVendor() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, vendorId }: { id: number; vendorId: number }) => {
+      const url = buildUrl(api.bookings.assignVendor.path, { id });
+      const res = await fetch(url, {
+        method: api.bookings.assignVendor.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vendorId }),
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to assign vendor");
+      return api.bookings.assignVendor.responses[200].parse(await res.json());
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [api.bookings.list.path] });
