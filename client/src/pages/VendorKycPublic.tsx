@@ -9,7 +9,8 @@ import { insertVendorKycSchema } from "@shared/schema";
 import { useSubmitVendorKyc } from "@/hooks/use-vendors";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
-import { Store, FileCheck } from "lucide-react";
+import { Store, FileCheck, Upload, ImageIcon, CheckCircle2 } from "lucide-react";
+import { useState, useRef } from "react";
 
 const kycSchema = insertVendorKycSchema.extend({
   phone: z.string().length(10, "Phone number must be exactly 10 digits"),
@@ -18,9 +19,95 @@ const kycSchema = insertVendorKycSchema.extend({
 
 type KycForm = z.infer<typeof kycSchema>;
 
+function ImageUploadField({
+  label,
+  hint,
+  value,
+  onChange,
+  testId,
+}: {
+  label: string;
+  hint: string;
+  value: string;
+  onChange: (base64: string) => void;
+  testId: string;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      return;
+    }
+
+    setFileName(file.name);
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const result = ev.target?.result as string;
+      setPreview(result);
+      onChange(result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  return (
+    <div className="space-y-3">
+      <Label>{label}</Label>
+      <div
+        className="border-2 border-dashed border-primary/30 rounded-2xl p-4 bg-white/60 hover:bg-white/80 hover:border-primary/50 transition-all cursor-pointer"
+        onClick={() => inputRef.current?.click()}
+        data-testid={testId}
+      >
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+
+        {preview ? (
+          <div className="space-y-2">
+            <img
+              src={preview}
+              alt={label}
+              className="w-full h-40 object-cover rounded-xl border border-white shadow"
+            />
+            <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
+              <CheckCircle2 className="w-4 h-4" />
+              {fileName}
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-2 py-6 text-muted-foreground">
+            <div className="bg-primary/10 rounded-full p-3">
+              <ImageIcon className="w-8 h-8 text-primary" />
+            </div>
+            <p className="text-sm font-medium">Tap to select from gallery</p>
+            <p className="text-xs">{hint}</p>
+          </div>
+        )}
+      </div>
+      {value && !preview && (
+        <p className="text-xs text-green-600 flex items-center gap-1">
+          <CheckCircle2 className="w-3 h-3" /> Image selected
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function VendorKycPublic() {
   const { toast } = useToast();
   const submitKyc = useSubmitVendorKyc();
+
+  const [aadharData, setAadharData] = useState("");
+  const [panData, setPanData] = useState("");
 
   const form = useForm<KycForm>({
     resolver: zodResolver(kycSchema),
@@ -28,10 +115,21 @@ export default function VendorKycPublic() {
   });
 
   const onSubmit = (data: KycForm) => {
-    submitKyc.mutate(data, {
+    if (!aadharData) {
+      toast({ variant: "destructive", title: "Aadhar required", description: "Please upload your Aadhar card image." });
+      return;
+    }
+    if (!panData) {
+      toast({ variant: "destructive", title: "PAN required", description: "Please upload your PAN card image." });
+      return;
+    }
+
+    submitKyc.mutate({ ...data, aadharUrl: aadharData, panUrl: panData }, {
       onSuccess: () => {
         toast({ title: "Application Submitted!", description: "Your KYC is under review. Admin will contact you with login credentials." });
         form.reset();
+        setAadharData("");
+        setPanData("");
       },
       onError: (err) => {
         toast({ variant: "destructive", title: "Submission Failed", description: err.message });
@@ -47,13 +145,15 @@ export default function VendorKycPublic() {
             <div className="bg-primary/10 rounded-full p-5"><Store className="w-10 h-10 text-primary" /></div>
           </div>
           <h1 className="text-4xl font-display font-bold mb-3">Partner With IndaneSewa</h1>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">Become an authorized vendor and deliver Indane LPG cylinders in your area. Submit your KYC — admin will review and provide login credentials.</p>
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+            Become an authorized vendor. Submit your KYC — admin will review and provide your login credentials.
+          </p>
         </div>
 
         <Card className="glass shadow-2xl border-white/50 rounded-3xl overflow-hidden">
           <CardHeader className="bg-primary/5 pb-6 border-b">
             <CardTitle className="flex items-center gap-2"><FileCheck className="w-5 h-5 text-primary" /> KYC Application Form</CardTitle>
-            <CardDescription>Fill all fields carefully. Approval usually takes 1-2 business days.</CardDescription>
+            <CardDescription>Fill all fields and upload your identity documents from your gallery.</CardDescription>
           </CardHeader>
           <CardContent className="pt-8 p-8">
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -91,19 +191,22 @@ export default function VendorKycPublic() {
                 {form.formState.errors.address && <p className="text-destructive text-xs">{form.formState.errors.address.message}</p>}
               </div>
 
+              {/* Document Upload */}
               <div className="grid sm:grid-cols-2 gap-5 p-5 bg-secondary/30 rounded-2xl border border-secondary">
-                <div className="space-y-2">
-                  <Label htmlFor="aadharUrl">Aadhar Document URL *</Label>
-                  <Input id="aadharUrl" placeholder="https://drive.google.com/..." {...form.register("aadharUrl")} className="bg-white h-12 rounded-xl" data-testid="kyc-aadhar" />
-                  <p className="text-xs text-muted-foreground">Upload to Google Drive and paste link</p>
-                  {form.formState.errors.aadharUrl && <p className="text-destructive text-xs">{form.formState.errors.aadharUrl.message}</p>}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="panUrl">PAN Document URL *</Label>
-                  <Input id="panUrl" placeholder="https://drive.google.com/..." {...form.register("panUrl")} className="bg-white h-12 rounded-xl" data-testid="kyc-pan" />
-                  <p className="text-xs text-muted-foreground">Upload to Google Drive and paste link</p>
-                  {form.formState.errors.panUrl && <p className="text-destructive text-xs">{form.formState.errors.panUrl.message}</p>}
-                </div>
+                <ImageUploadField
+                  label="Aadhar Card Photo *"
+                  hint="JPG, PNG accepted"
+                  value={aadharData}
+                  onChange={setAadharData}
+                  testId="kyc-aadhar-upload"
+                />
+                <ImageUploadField
+                  label="PAN Card Photo *"
+                  hint="JPG, PNG accepted"
+                  value={panData}
+                  onChange={setPanData}
+                  testId="kyc-pan-upload"
+                />
               </div>
 
               <Button type="submit" disabled={submitKyc.isPending} className="w-full h-14 rounded-xl text-lg shadow-lg" data-testid="kyc-submit">
