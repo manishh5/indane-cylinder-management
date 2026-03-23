@@ -1,0 +1,9 @@
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+[1G[0K2:52:00 PM [express] serving on port 5000
+2:52:06 PM [express] GET /api/auth/me 401 in 2ms :: {"message":"Not authenticated"}
+2:52:06 PM [express] GET /api/rates 200 in 3ms :: [{"id":1,"cylinderType":"14.2kg Domestic","price":902},{"id":2,"cylinderType":"19kg Commercial","price":1765},{"id":3,"cylinderType":"10kg Composite","price":640},{"id":4,"cylinderType":"5kg Domestic","price":450},{"id":5,"cylinderType":"5kg Commercial","price":490}]
+2:52:13 PM [express] GET /api/rates 200 in 2ms :: [{"id":1,"cylinderType":"14.2kg Domestic","price":902},{"id":2,"cylinderType":"19kg Commercial","price":1765},{"id":3,"cylinderType":"10kg Composite","price":640},{"id":4,"cylinderType":"5kg Domestic","price":450},{"id":5,"cylinderType":"5kg Commercial","price":490}]
+2:52:13 PM [express] GET /api/auth/me 401 in 1ms :: {"message":"Not authenticated"}

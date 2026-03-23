@@ -1,0 +1,160 @@
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+[1G[0K2:52:54 PM [express] serving on port 5000
+2:52:56 PM [express] GET /api/auth/me 401 in 1ms :: {"message":"Not authenticated"}
+2:52:56 PM [express] GET /api/rates 304 in 2ms :: [{"id":1,"cylinderType":"14.2kg Domestic","price":902},{"id":2,"cylinderType":"19kg Commercial","price":1765},{"id":3,"cylinderType":"10kg Composite","price":640},{"id":4,"cylinderType":"5kg Domestic","price":450},{"id":5,"cylinderType":"5kg Commercial","price":490}]
+2:53:02 PM [express] GET /api/auth/me 401 in 0ms :: {"message":"Not authenticated"}
+2:53:02 PM [express] GET /api/rates 304 in 2ms :: [{"id":1,"cylinderType":"14.2kg Domestic","price":902},{"id":2,"cylinderType":"19kg Commercial","price":1765},{"id":3,"cylinderType":"10kg Composite","price":640},{"id":4,"cylinderType":"5kg Domestic","price":450},{"id":5,"cylinderType":"5kg Commercial","price":490}]
+2:54:49 PM [express] GET /api/auth/me 401 in 1ms :: {"message":"Not authenticated"}
+2:54:49 PM [express] GET /api/rates 304 in 12ms :: [{"id":1,"cylinderType":"14.2kg Domestic","price":902},{"id":2,"cylinderType":"19kg Commercial","price":1765},{"id":3,"cylinderType":"10kg Composite","price":640},{"id":4,"cylinderType":"5kg Domestic","price":450},{"id":5,"cylinderType":"5kg Commercial","price":490}]
+2:58:30 PM [express] GET /api/auth/me 401 in 1ms :: {"message":"Not authenticated"}
+2:58:30 PM [express] GET /api/rates 304 in 11ms :: [{"id":1,"cylinderType":"14.2kg Domestic","price":902},{"id":2,"cylinderType":"19kg Commercial","price":1765},{"id":3,"cylinderType":"10kg Composite","price":640},{"id":4,"cylinderType":"5kg Domestic","price":450},{"id":5,"cylinderType":"5kg Commercial","price":490}]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m3:01:22 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/Home.tsx, /src/index.css[22m
+3:01:56 PM [express] GET /api/auth/me 401 in 0ms :: {"message":"Not authenticated"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m3:01:57 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m3:02:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m [33m(x2)[39m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m3:02:11 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Layout.tsx, /src/index.css[22m
+3:05:03 PM [express] GET /api/rates 304 in 10ms :: [{"id":1,"cylinderType":"14.2kg Domestic","price":902},{"id":2,"cylinderType":"19kg Commercial","price":1765},{"id":3,"cylinderType":"10kg Composite","price":640},{"id":4,"cylinderType":"5kg Domestic","price":450},{"id":5,"cylinderType":"5kg Commercial","price":490}]
+3:05:29 PM [express] GET /api/auth/me 401 in 1ms :: {"message":"Not authenticated"}
+3:08:19 PM [express] GET /api/auth/me 401 in 3ms :: {"message":"Not authenticated"}
+3:08:55 PM [express] POST /api/auth/register-customer 201 in 170ms :: {"id":4,"role":"customer","username":"9105149580","password":"m@nish","name":"Manish Dhiman","phone":"9105149580","address":"indra colony","kycApproved":false}
+3:08:55 PM [express] GET /api/bookings 200 in 7ms :: []
+3:09:03 PM [express] GET /api/rates 304 in 3ms :: [{"id":1,"cylinderType":"14.2kg Domestic","price":902},{"id":2,"cylinderType":"19kg Commercial","price":1765},{"id":3,"cylinderType":"10kg Composite","price":640},{"id":4,"cylinderType":"5kg Domestic","price":450},{"id":5,"cylinderType":"5kg Commercial","price":490}]
+3:09:11 PM [express] POST /api/bookings 201 in 8ms :: {"id":2,"customerId":4,"trackOrderId":"TRK-JIMSOL","customerName":"Manish Dhiman","phone":"9105149580","address":"indra colony","city":"","pincode":"","cylinderType":"14.2kg Domestic","quantity":1,"bookingType":"refill","amount":902,"specialInstructions":"","assignedVendorId":null,"status":"pending","createdAt":"2026-03-17T15:09:11.628Z"}
+3:09:12 PM [express] GET /api/bookings 200 in 3ms :: [{"id":2,"customerId":4,"trackOrderId":"TRK-JIMSOL","customerName":"Manish Dhiman","phone":"9105149580","address":"indra colony","city":"","pincode":"","cylinderType":"14.2kg Domestic","quantity":1,"bookingType":"refill","amount":902,"specialInstructions":"","assignedVendorId":null,"status":"pending","createdAt":"2026-03-17T15:09:11.628Z"}]
+3:09:23 PM [express] GET /api/bookings/track/TRK-JIMSOL 200 in 13ms :: {"id":2,"customerId":4,"trackOrderId":"TRK-JIMSOL","customerName":"Manish Dhiman","phone":"9105149580","address":"indra colony","city":"","pincode":"","cylinderType":"14.2kg Domestic","quantity":1,"bookingType":"refill","amount":902,"specialInstructions":"","assignedVendorId":null,"status":"pending","createdAt":"2026-03-17T15:09:11.628Z"}
+3:16:22 PM [express] GET /api/auth/me 200 in 2ms :: {"id":4,"role":"customer","username":"9105149580","password":"m@nish","name":"Manish Dhiman","phone":"9105149580","address":"indra colony","kycApproved":false}
+3:16:22 PM [express] GET /api/bookings 200 in 2ms :: [{"id":2,"customerId":4,"trackOrderId":"TRK-JIMSOL","customerName":"Manish Dhiman","phone":"9105149580","address":"indra colony","city":"","pincode":"","cylinderType":"14.2kg Domestic","quantity":1,"bookingType":"refill","amount":902,"specialInstructions":"","assignedVendorId":null,"status":"pending","createdAt":"2026-03-17T15:09:11.628Z"}]
+3:16:53 PM [express] GET /api/auth/me 200 in 1ms :: {"id":4,"role":"customer","username":"9105149580","password":"m@nish","name":"Manish Dhiman","phone":"9105149580","address":"indra colony","kycApproved":false}
+3:18:55 PM [express] GET /api/auth/me 304 in 2ms :: {"id":4,"role":"customer","username":"9105149580","password":"m@nish","name":"Manish Dhiman","phone":"9105149580","address":"indra colony","kycApproved":false}
+3:19:06 PM [express] GET /api/auth/me 304 in 2ms :: {"id":4,"role":"customer","username":"9105149580","password":"m@nish","name":"Manish Dhiman","phone":"9105149580","address":"indra colony","kycApproved":false}
+3:19:24 PM [express] GET /api/auth/me 304 in 2ms :: {"id":4,"role":"customer","username":"9105149580","password":"m@nish","name":"Manish Dhiman","phone":"9105149580","address":"indra colony","kycApproved":false}
+3:22:02 PM [express] GET /api/rates 304 in 11ms :: [{"id":1,"cylinderType":"14.2kg Domestic","price":902},{"id":2,"cylinderType":"19kg Commercial","price":1765},{"id":3,"cylinderType":"10kg Composite","price":640},{"id":4,"cylinderType":"5kg Domestic","price":450},{"id":5,"cylinderType":"5kg Commercial","price":490}]
+3:22:05 PM [express] POST /api/auth/logout 200 in 2ms :: {"message":"Logged out"}
+3:22:06 PM [express] GET /api/auth/me 401 in 1ms :: {"message":"Not authenticated"}
+3:22:37 PM [express] POST /api/auth/login 401 in 11ms
+3:22:43 PM [express] POST /api/auth/login 401 in 1ms
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m3:28:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/VendorKycPublic.tsx, /src/index.css[22m
+3:56:55 PM [express] GET /api/auth/me 401 in 1ms :: {"message":"Not authenticated"}
+4:01:03 PM [express] GET /api/auth/me 401 in 1ms :: {"message":"Not authenticated"}
+4:08:16 PM [express] GET /api/auth/me 401 in 2ms :: {"message":"Not authenticated"}
