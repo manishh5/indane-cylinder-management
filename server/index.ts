@@ -15,11 +15,18 @@ import cors from "cors";
 const app = express();
 const httpServer = createServer(app);
 
+
+
+
 app.use(cors({
   origin: "https://indane-cylinder-management.vercel.app",
   credentials: true
 }));
 app.set("trust proxy", 1);
+
+
+
+
 
 declare module "http" {
   interface IncomingMessage {
@@ -36,6 +43,7 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: false }));
+
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
