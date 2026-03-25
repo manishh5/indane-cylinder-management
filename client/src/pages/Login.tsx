@@ -59,7 +59,7 @@ export default function Login() {
         <div className="w-full max-w-md space-y-4">
 
           {/* Admin credentials info card */}
-          <Card className="rounded-2xl border border-primary/20 bg-primary/5 shadow-sm">
+          {/* <Card className="rounded-2xl border border-primary/20 bg-primary/5 shadow-sm">
             <CardContent className="p-5">
               <div className="flex items-start gap-3">
                 <div className="bg-primary/15 rounded-xl p-2 mt-0.5">
@@ -114,7 +114,7 @@ export default function Login() {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Login form */}
           <Card className="glass shadow-2xl border-white/50 rounded-3xl overflow-hidden">
