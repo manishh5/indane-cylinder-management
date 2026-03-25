@@ -14,7 +14,7 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(`${BASE_URL}${url.startsWith("") ? "" : ""}${url}`, {
+  const res = await fetch(`${BASE_URL}${url}`, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
@@ -32,7 +32,7 @@ export const getQueryFn: <T>(options: {
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     const path = queryKey.join("/") as string;
-    const res = await fetch(`${BASE_URL}${path.startsWith("") ? "" : ""}${path}`, {
+    const res = await fetch(`${BASE_URL}${path}`, {
       credentials: "include",
     });
 
