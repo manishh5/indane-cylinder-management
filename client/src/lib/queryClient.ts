@@ -14,17 +14,11 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-    const finalUrl = `${BASE_URL}${url.startsWith("/api") ? "" : "/api"}${url}`;
-
-    // ✅ ADD THIS LINE
-    console.log("API REQUEST →", finalUrl);
-
-    const res = await fetch(finalUrl, {
+  const res = await fetch(`${BASE_URL}${url.startsWith("/api") ? "" : "/api"}${url}`, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
-    
   });
 
   await throwIfResNotOk(res);
@@ -38,15 +32,9 @@ export const getQueryFn: <T>(options: {
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     const path = queryKey.join("/") as string;
-    const finalUrl = `${BASE_URL}${path.startsWith("/api") ? "" : "/api"}${path}`;
-
-    // ✅ ADD THIS
-    console.log("QUERY REQUEST →", finalUrl);
-
-    const res = await fetch(finalUrl, {
+    const res = await fetch(`${BASE_URL}${path.startsWith("/api") ? "" : "/api"}${path}`, {
       credentials: "include",
     });
-    
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
       return null;
