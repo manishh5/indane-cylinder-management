@@ -13,11 +13,13 @@ export function useVendorKycList() {
   });
 }
 
+const BASE_URL = "https://indane-cylinder-management.onrender.com";
+
 export function useSubmitVendorKyc() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: z.infer<typeof api.vendors.submitKyc.input>) => {
-      const res = await fetch(api.vendors.submitKyc.path, {
+      const res = await fetch(`${BASE_URL}${api.vendors.submitKyc.path}`, {
         method: api.vendors.submitKyc.method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -162,7 +164,7 @@ export function useSubmitPayment() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: { amount: number; paymentMethod: string; referenceNumber?: string; notes?: string; vendorId?: number }) => {
-      const res = await fetch(api.vendors.submitPayment.path, {
+      const res = await fetch(`${BASE_URL}${api.vendors.submitKyc.path}`, {
         method: api.vendors.submitPayment.method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

@@ -8,7 +8,11 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import session from "express-session";
 import createMemoryStore from "memorystore";
+import multer from "multer";
+import cloudinary from "./config/cloudinary";
 
+const storageMulter = multer.memoryStorage();
+const upload = multer({ storage: storageMulter });
 const MemoryStore = createMemoryStore(session);
 
 export async function registerRoutes(httpServer: Server, app: Express): Promise<Server> {
@@ -52,6 +56,35 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       for (const r of defaultRates) await storage.upsertCylinderRate(r.cylinderType, r.price);
     }
   } catch (err) { console.error("Seed error", err); }
+
+  // ── FILE UPLOAD (Cloudinary) ──
+  app.post("/api/upload", upload.single("file"), async (req, res) => {
+    try {
+      const file = req.file;
+
+      if (!file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      const result: any = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream(
+          { folder: "indane" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        ).end(file.buffer);
+      });
+
+      res.json({
+        url: result.secure_url,
+      });
+
+    } catch (error) {
+      console.error("Upload error:", error);
+      res.status(500).json({ message: "Upload failed" });
+    }
+  });
 
   // ── AUTH ──
   app.post(api.auth.login.path, passport.authenticate("local"), (req, res) => res.json(req.user));
