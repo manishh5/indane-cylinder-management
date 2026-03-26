@@ -19,7 +19,8 @@ export function useSubmitVendorKyc() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: z.infer<typeof api.vendors.submitKyc.input>) => {
-      
+      const BASE_URL = "https://indane-cylinder-management.onrender.com";
+
       const res = await fetch(`${BASE_URL}${api.vendors.submitKyc.path}`, {
         method: api.vendors.submitKyc.method,
         headers: { "Content-Type": "application/json" },
