@@ -7,7 +7,7 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-const BASE_URL = "https://api.sarvatindanesewa.in";
+const BASE_URL = "https://indane-cylinder-management.onrender.com";
 
 export async function apiRequest(
   method: string,
