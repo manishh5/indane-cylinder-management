@@ -19,7 +19,9 @@ const httpServer = createServer(app);
 
 
 app.use(cors({
-  origin: "https://indane-cylinder-management.vercel.app",
+  origin: [
+    "https://sarvatindanesewa.in"
+  ],
   credentials: true
 }));
 app.set("trust proxy", 1);
