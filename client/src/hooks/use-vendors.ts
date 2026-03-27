@@ -13,7 +13,7 @@ export function useVendorKycList() {
   });
 }
 
-const BASE_URL = "https://indane-cylinder-management.onrender.com";
+const BASE_URL = "https://api.sarvatindanesewa.in";
 
 export function useSubmitVendorKyc() {
   const queryClient = useQueryClient();
