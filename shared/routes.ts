@@ -12,10 +12,10 @@ export const errorSchemas = {
 
 export const api = {
   auth: {
-    login: { method: "POST" as const, path: "/auth/login" as const, input: z.object({ username: z.string(), password: z.string() }), responses: { 200: z.custom<typeof users.$inferSelect>() } },
-    logout: { method: "POST" as const, path: "/auth/logout" as const, responses: { 200: z.object({ message: z.string() }) } },
-    me: { method: "GET" as const, path: "/auth/me" as const, responses: { 200: z.custom<typeof users.$inferSelect>() } },
-    registerCustomer: { method: "POST" as const, path: "/auth/register-customer" as const, input: z.object({ name: z.string(), phone: z.string(), password: z.string(), address: z.string() }), responses: { 201: z.custom<typeof users.$inferSelect>() } },
+    login: { method: "POST" as const, path: "/api/auth/login" as const, input: z.object({ username: z.string(), password: z.string() }), responses: { 200: z.custom<typeof users.$inferSelect>() } },
+    logout: { method: "POST" as const, path: "/api/auth/logout" as const, responses: { 200: z.object({ message: z.string() }) } },
+    me: { method: "GET" as const, path: "/api/auth/me" as const, responses: { 200: z.custom<typeof users.$inferSelect>() } },
+    registerCustomer: { method: "POST" as const, path: "/api/auth/register-customer" as const, input: z.object({ name: z.string(), phone: z.string(), password: z.string(), address: z.string() }), responses: { 201: z.custom<typeof users.$inferSelect>() } },
   },
   bookings: {
     create: { method: "POST" as const, path: "/api/bookings" as const, input: insertBookingSchema, responses: { 201: z.custom<typeof bookings.$inferSelect>() } },
