@@ -4,16 +4,13 @@ import { z } from "zod";
 
 type User = z.infer<typeof api.auth.me.responses[200]>;
 
-const BASE_URL = "https://indane-cylinder-management.onrender.com";
-
 export function useAuth() {
   const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery<User | null>({
     queryKey: [api.auth.me.path],
     queryFn: async () => {
-      
-      const res = await fetch(`${BASE_URL}${api.auth.me.path}`, { credentials: "include" });
+      const res = await fetch(api.auth.me.path, { credentials: "include" });
       if (res.status === 401) return null;
       if (!res.ok) throw new Error("Failed to fetch user");
       return api.auth.me.responses[200].parse(await res.json());
@@ -22,7 +19,7 @@ export function useAuth() {
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: z.infer<typeof api.auth.login.input>) => {
-      const res = await fetch(`${BASE_URL}${api.auth.login.path}`, {
+      const res = await fetch(api.auth.login.path, {
         method: api.auth.login.method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
@@ -41,7 +38,7 @@ export function useAuth() {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch(`${BASE_URL}${api.auth.logout.path}`, {
+      const res = await fetch(api.auth.logout.path, {
         method: api.auth.logout.method,
         credentials: "include",
       });
@@ -55,7 +52,7 @@ export function useAuth() {
 
   const registerMutation = useMutation({
     mutationFn: async (data: z.infer<typeof api.auth.registerCustomer.input>) => {
-      const res = await fetch(`${BASE_URL}${api.auth.registerCustomer.path}`, {
+      const res = await fetch(api.auth.registerCustomer.path, {
         method: api.auth.registerCustomer.method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
